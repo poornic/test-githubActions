@@ -1,0 +1,58 @@
+# .github/workflows/create-repos-from-json.yml
+
+name: Create Repositories From JSON
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create_repos:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout this repo
+      uses: actions/checkout@v4
+
+    - name: Install jq
+      run: sudo apt-get install -y jq
+
+    - name: Read JSON and create repos with branches
+      env:
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      run: |
+        echo "Reading repos.json..."
+        for row in $(jq -c '.[]' repos.json); do
+          name=$(echo "$row" | jq -r '.name')
+          description=$(echo "$row" | jq -r '.description')
+          private=$(echo "$row" | jq -r '.private')
+
+          echo "Creating repo: $name"
+          repo_response=$(curl -s -X POST https://api.github.com/user/repos \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -d @- <<EOF
+          {
+            "name": "$name",
+            "description": "$description",
+            "private": $private,
+            "auto_init": true
+          }
+          EOF
+          )
+
+          clone_url=$(echo "$repo_response" | jq -r '.clone_url')
+          echo "Cloned repo URL: $clone_url"
+
+          git config --global user.name "poornic"
+          git config --global user.email "poornic22@gmail.com"
+
+          git clone "$clone_url"
+          cd "$name"
+
+          # Create release branch from main
+          git checkout -b release
+          git push origin release
+
+          cd ..
+          rm -rf "$name"
+        done
