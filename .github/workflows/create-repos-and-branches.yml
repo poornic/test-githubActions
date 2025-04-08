@@ -30,7 +30,7 @@ jobs:
           repo_response=$(curl -s -X POST https://api.github.com/user/repos \
             -H "Authorization: Bearer $GH_TOKEN" \
             -H "Accept: application/vnd.github+json" \
-            -d @- <<EOF
+            -d @- <<-EOF
           {
             "name": "$name",
             "description": "$description",
