@@ -21,7 +21,7 @@ jobs:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
         echo "Reading repos.json..."
-        for row in $(jq -c '.[]' repos.json); do
+        for row in $(jq -c '.[]' .github/workflows/repos.json ); do
           name=$(echo "$row" | jq -r '.name')
           description=$(echo "$row" | jq -r '.description')
           private=$(echo "$row" | jq -r '.private')
