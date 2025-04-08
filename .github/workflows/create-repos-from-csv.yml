@@ -16,7 +16,7 @@ jobs:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
         echo "Reading repos.csv and creating repositories..."
-        tail -n +2 repos.csv | while IFS=',' read -r name description private auto_init; do
+        tail -n +2 .github/workflows/repos.csv | while IFS=',' read -r name description private auto_init; do
           echo "Creating repo: $name"
           # Convert booleans to lowercase just in case
           private=$(echo "$private" | tr '[:upper:]' '[:lower:]')
