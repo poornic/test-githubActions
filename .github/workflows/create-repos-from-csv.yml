@@ -33,5 +33,4 @@ jobs:
             "private": $private,
             "auto_init": $auto_init
           }
-          EOF
-          done
+          EOF  
