@@ -1,0 +1,40 @@
+name: Create Repos from JSON
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create_repos:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Read JSON and create repositories
+      env:
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      run: |
+        echo "Parsing repos.json and creating repositories..."
+
+        # Loop through each repo entry using jq
+        jq -c '.[]' repos.json | while read repo; do
+          name=$(echo "$repo" | jq -r '.name')
+          description=$(echo "$repo" | jq -r '.description')
+          private=$(echo "$repo" | jq -r '.private')
+          auto_init=$(echo "$repo" | jq -r '.auto_init')
+
+          echo "Creating repository: $name"
+
+          curl -s -X POST https://api.github.com/user/repos \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -d @- <<EOF
+          {
+            "name": "$name",
+            "description": "$description",
+            "private": $private,
+            "auto_init": $auto_init
+          }
+        EOF
+        done
