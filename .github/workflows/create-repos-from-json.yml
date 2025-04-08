@@ -18,7 +18,7 @@ jobs:
         echo "Parsing repos.json and creating repositories..."
 
         # Loop through each repo entry using jq
-        jq -c '.[]' repos.json | while read repo; do
+        jq -c '.[]' .github/workflows/repos.json | while read repo; do
           name=$(echo "$repo" | jq -r '.name')
           description=$(echo "$repo" | jq -r '.description')
           private=$(echo "$repo" | jq -r '.private')
