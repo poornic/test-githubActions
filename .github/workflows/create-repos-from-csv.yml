@@ -19,8 +19,8 @@ jobs:
         tail -n +2 .github/workflows/repos.csv | while IFS=',' read -r name description private auto_init; do
           echo "Creating repo: $name"
           # Convert booleans to lowercase just in case
-          private=$(echo "$private" | tr '[:upper:]' '[:lower:]')
-          auto_init=$(echo "$auto_init" | tr '[:upper:]' '[:lower:]')
+          # private=$(echo "$private" | tr '[:upper:]' '[:lower:]')
+          # auto_init=$(echo "$auto_init" | tr '[:upper:]' '[:lower:]')
 
           echo "private : $private"
           echo "auto_init : $auto_init"
