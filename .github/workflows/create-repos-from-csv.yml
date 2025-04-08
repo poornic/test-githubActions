@@ -1,0 +1,37 @@
+name: Create Repositories From CSV
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create_repos:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Read CSV and create repos
+      env:
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      run: |
+        echo "Reading repos.csv and creating repositories..."
+        tail -n +2 repos.csv | while IFS=',' read -r name description private auto_init; do
+          echo "Creating repo: $name"
+
+          # Convert booleans to lowercase just in case
+          private=$(echo "$private" | tr '[:upper:]' '[:lower:]')
+          auto_init=$(echo "$auto_init" | tr '[:upper:]' '[:lower:]')
+
+          curl -s -X POST https://api.github.com/user/repos \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -d @- <<EOF
+          {
+            "name": "$name",
+            "description": "$description",
+            "private": $private,
+            "auto_init": $auto_init
+          }
+EOF
+done
