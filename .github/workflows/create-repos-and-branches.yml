@@ -40,8 +40,8 @@ jobs:
           EOF
           )
 
-          clone_url=$(echo "$repo_response" | jq -r '.clone_url')
-          echo "Cloned repo URL: $clone_url"
+          clone_url=$(echo '$repo_response' | jq -r '.clone_url')
+          echo 'Cloned repo URL: $clone_url'
 
           git config --global user.name "poornic"
           git config --global user.email "poornic22@gmail.com"
