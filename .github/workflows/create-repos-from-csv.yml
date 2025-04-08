@@ -24,4 +24,16 @@ jobs:
 
           echo "private : $private"
           echo "auto_init : $auto_init"
+
+          curl -s -X POST https://api.github.com/user/repos \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -d @- <<EOF
+          {
+            "name": "$name",
+            "description": "$description",
+            "private": $private,
+            "auto_init": $auto_init
+          }
+          EOF
           done
