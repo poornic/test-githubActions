@@ -1,0 +1,3 @@
+name,description,private,auto_init
+my-repo-1,First repo,true,true
+my-repo-2,Second repo,false,false
