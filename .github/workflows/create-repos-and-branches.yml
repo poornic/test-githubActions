@@ -51,11 +51,11 @@ jobs:
           echo "clone url : $clone_url"
 
           if [[ "$clone_url" == "null" ]]; then
-            echo "❌ Failed to create $name: $(echo "$response" | jq -r '.message')"
+            echo "Failed to create $name: $(echo "$response" | jq -r '.message')"
             continue
           fi
 
-          echo "✅ Created $name, cloning..."
+          echo "Created $name, cloning..."
 
           auth_url=$(echo "$clone_url" | sed "s#https://#https://${GH_TOKEN}@#")
 
@@ -69,9 +69,9 @@ jobs:
             git config --global user.email "poornic22@gmail.com"
             git checkout -b release
             git push origin release
-            echo "✅ Created release branch for $name"
+            echo "Created release branch for $name"
           else
-            echo "⚠️ Skipping release branch for $name (no initial commit)"
+            echo "Skipping release branch for $name (no initial commit)"
           fi
 
           cd ..
