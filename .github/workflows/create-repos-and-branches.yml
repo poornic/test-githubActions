@@ -43,7 +43,7 @@ jobs:
             "private": $private,
             "auto_init": $auto_init
           }
-EOF
+        EOF
           )
 
           # Get the clone URL
