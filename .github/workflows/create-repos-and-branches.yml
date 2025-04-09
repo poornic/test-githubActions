@@ -48,6 +48,7 @@ jobs:
 
           # Get the clone URL
           clone_url=$(echo "$response" | jq -r '.clone_url')
+          echo "clone url : $clone_url"
 
           if [[ "$clone_url" == "null" ]]; then
             echo "❌ Failed to create $name: $(echo "$response" | jq -r '.message')"
@@ -62,6 +63,8 @@ jobs:
 
           # Only create release branch if auto_init is true (i.e., repo has at least 1 commit)
           if [[ "$auto_init" == "true" ]]; then
+            git config --global user.name "poornic"
+            git config --global user.email "poornic22@gmail.com"
             git checkout -b release
             git push origin release
             echo "✅ Created release branch for $name"
