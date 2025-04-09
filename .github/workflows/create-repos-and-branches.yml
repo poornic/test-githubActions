@@ -21,8 +21,8 @@ jobs:
         mapfile -t repos < <(jq -c '.[]' .github/workflows/repos.json)
 
         # Set global Git config
-        git config --global user.name "github-actions"
-        git config --global user.email "actions@github.com"
+        git config --global user.name "poornic"
+        git config --global user.email "poornic22@gmail.com"
 
         for repo in "${repos[@]}"; do
           name=$(echo "$repo" | jq -r '.name')
