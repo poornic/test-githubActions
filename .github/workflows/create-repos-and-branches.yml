@@ -57,8 +57,10 @@ jobs:
 
           echo "✅ Created $name, cloning..."
 
+          auth_url=$(echo "$clone_url" | sed "s#https://#https://${GH_TOKEN}@#")
+
           # Clone repo
-          git clone "$clone_url"
+          git clone "$auth_url"
           cd "$name"
 
           # Only create release branch if auto_init is true (i.e., repo has at least 1 commit)
