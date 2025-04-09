@@ -37,7 +37,7 @@ jobs:
             "private": $private,
             "auto_init": true
           }
-          EOF
+        EOF
           )
 
           clone_url=$(echo '$repo_response' | jq -r '.clone_url')
