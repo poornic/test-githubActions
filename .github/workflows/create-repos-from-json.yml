@@ -11,6 +11,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Install jq
+      run: sudo apt-get install -y jq
+
     - name: Read JSON and create repositories
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
