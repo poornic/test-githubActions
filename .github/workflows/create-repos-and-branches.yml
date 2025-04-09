@@ -1,6 +1,6 @@
 # .github/workflows/create-repos-from-json.yml
 
-name: Create Repositories From JSON
+name: Create Repositories from JSON
 
 on:
   workflow_dispatch:
@@ -13,45 +13,63 @@ jobs:
     - name: Checkout this repo
       uses: actions/checkout@v4
 
-    - name: Install jq
-      run: sudo apt-get install -y jq
-
-    - name: Read JSON and create repos with branches
+    - name: Parse JSON and create repos
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
-        echo "Reading repos.json..."
-        for row in $(jq -c '.[]' .github/workflows/repos.json ); do
-          name=$(echo "$row" | jq -r '.name')
-          description=$(echo "$row" | jq -r '.description')
-          private=$(echo "$row" | jq -r '.private')
+        echo "Parsing repos.json..."
 
-          echo "Creating repo: $name"
-          repo_response=$(curl -s -X POST https://api.github.com/user/repos \
+        # Read all JSON objects into array
+        mapfile -t repos < <(jq -c '.[]' repos.json)
+
+        # Set global Git config
+        git config --global user.name "github-actions"
+        git config --global user.email "actions@github.com"
+
+        for repo in "${repos[@]}"; do
+          name=$(echo "$repo" | jq -r '.name')
+          description=$(echo "$repo" | jq -r '.description')
+          private=$(echo "$repo" | jq -r '.private')
+          auto_init=$(echo "$repo" | jq -r '.auto_init')
+
+          echo "Creating repository: $name"
+
+          # Create repo
+          response=$(curl -s -X POST https://api.github.com/user/repos \
             -H "Authorization: Bearer $GH_TOKEN" \
             -H "Accept: application/vnd.github+json" \
-            -d @- <<-EOF
+            -d @- <<EOF
           {
             "name": "$name",
             "description": "$description",
             "private": $private,
-            "auto_init": true
+            "auto_init": $auto_init
           }
-        EOF
+EOF
           )
 
-          clone_url=$(echo '$repo_response' | jq -r '.clone_url')
-          echo 'Cloned repo URL: $clone_url'
+          # Get the clone URL
+          clone_url=$(echo "$response" | jq -r '.clone_url')
 
-          git config --global user.name "poornic"
-          git config --global user.email "poornic22@gmail.com"
+          if [[ "$clone_url" == "null" ]]; then
+            echo "❌ Failed to create $name: $(echo "$response" | jq -r '.message')"
+            continue
+          fi
 
+          echo "✅ Created $name, cloning..."
+
+          # Clone repo
           git clone "$clone_url"
           cd "$name"
 
-          # Create release branch from main
-          git checkout -b release
-          git push origin release
+          # Only create release branch if auto_init is true (i.e., repo has at least 1 commit)
+          if [[ "$auto_init" == "true" ]]; then
+            git checkout -b release
+            git push origin release
+            echo "✅ Created release branch for $name"
+          else
+            echo "⚠️ Skipping release branch for $name (no initial commit)"
+          fi
 
           cd ..
           rm -rf "$name"
