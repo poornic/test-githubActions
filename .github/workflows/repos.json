@@ -1,12 +1,12 @@
 [
   {
-    "name": "project-three",
+    "name": "project-three-cap1",
     "description": "First test repo",
     "private": true,
     "auto_init": true
   },
   {
-    "name": "project-four",
+    "name": "project-four-cap2",
     "description": "Second test repo",
     "private": false,
     "auto_init": true
