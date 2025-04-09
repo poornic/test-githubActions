@@ -1,5 +1,3 @@
-# .github/workflows/create-repos-from-json.yml
-
 name: Create Repositories from JSON
 
 on:
