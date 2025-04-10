@@ -31,7 +31,6 @@ jobs:
           service=$(echo "$repo" | jq -r '.service')
           name="$domain"-"$service"-"captwo-service"
           private=$(echo "$repo" | jq -r '.private')
-          auto_init=$(echo "$repo" | jq -r '.auto_init')
          
           echo "Creating repository: $name"
 
