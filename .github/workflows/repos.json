@@ -3,12 +3,10 @@
     "domain": "aaui",
     "service": "alw",
     "private": true,
-    "auto_init": true
   },
   {
     "domain": "aauy",
     "service": "aly",
     "private": true,
-    "auto_init": true
   }
 ]
