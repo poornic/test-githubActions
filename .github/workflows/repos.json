@@ -2,11 +2,11 @@
   {
     "domain": "aaui",
     "service": "alw",
-    "private": true,
+    "private": true
   },
   {
     "domain": "aauy",
     "service": "aly",
-    "private": true,
+    "private": true
   }
 ]
