@@ -1,14 +1,14 @@
 [
   {
-    "name": "project-three-cap1",
-    "description": "First test repo",
+    "domain": "aaui",
+    "service": "alw",
     "private": true,
     "auto_init": true
   },
   {
-    "name": "project-four-cap2",
-    "description": "Second test repo",
-    "private": false,
+    "domain": "aauy",
+    "service": "aly",
+    "private": true,
     "auto_init": true
   }
 ]
