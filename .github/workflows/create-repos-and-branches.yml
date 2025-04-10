@@ -14,6 +14,8 @@ jobs:
     - name: Parse JSON and create repos
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        TEMPLATE_OWNER: poornic
+        TEMPLATE_REPO: test
       run: |
         echo "Parsing repos.json..."
 
@@ -29,20 +31,19 @@ jobs:
           service=$(echo "$repo" | jq -r '.service')
           name="$domain"-"$service"-"captwo-service"
           private=$(echo "$repo" | jq -r '.private')
-          auto_init=$(echo "$repo" | jq -r '.auto_init')
-
+         
           echo "Creating repository: $name"
 
           # Create repo
-          response=$(curl -s -X POST https://api.github.com/user/repos \
+          response=$(curl -s -X POST https://api.github.com/repos/$TEMPLATE_OWNER/$TEMPLATE_REPO/generate \
             -H "Authorization: Bearer $GH_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
+            -H "Accept: application/vnd.github.baptiste-preview+json" \
             -d @- <<EOF
           {
+            "owner": "$TEMPLATE_OWNER",
             "name": "$name",
-            "description": "$description",
             "private": $private,
-            "auto_init": $auto_init
+            "include_all_branches": false
           }
         EOF
           )
