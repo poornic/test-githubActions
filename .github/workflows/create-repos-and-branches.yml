@@ -44,7 +44,6 @@ jobs:
             "owner": "$TEMPLATE_OWNER",
             "name": "$name",
             "private": $private,
-            "auto_init": $auto_init,
             "include_all_branches": false
           }
         EOF
