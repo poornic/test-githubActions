@@ -65,17 +65,18 @@ jobs:
           git clone "$auth_url"
           cd "$name"
 
-          # Only create release branch if auto_init is true (i.e., repo has at least 1 commit)
-          if [[ "$auto_init" == "true" ]]; then
-            git config --global user.name "poornic"
-            git config --global user.email "poornic22@gmail.com"
-            git checkout -b release
-            git push origin release
-            echo "Created release branch for $name"
-          else
-            echo "Skipping release branch for $name (no initial commit)"
-          fi
+          sleep 5
 
+          echo "Cloning and creating release branch..."
+          git clone https://x-access-token:$GH_TOKEN@github.com/$TEMPLATE_OWNER/$name.git
+          cd $name
+          
+          git config --global user.name "poornic"
+          git config --global user.email "poornic22@gmail.com"
+          git checkout -b release
+          git push origin release
+          echo "Created release branch for $name"
+           
           cd ..
           rm -rf "$name"
         done
