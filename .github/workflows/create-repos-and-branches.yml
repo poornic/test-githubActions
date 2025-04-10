@@ -25,8 +25,9 @@ jobs:
         git config --global user.email "poornic22@gmail.com"
 
         for repo in "${repos[@]}"; do
-          name=$(echo "$repo" | jq -r '.name')
-          description=$(echo "$repo" | jq -r '.description')
+          domain=$(echo "$repo" | jq -r '.domain')
+          service=$(echo "$repo" | jq -r '.service')
+          name="$domain"-"$service"-"captwo-service"
           private=$(echo "$repo" | jq -r '.private')
           auto_init=$(echo "$repo" | jq -r '.auto_init')
 
