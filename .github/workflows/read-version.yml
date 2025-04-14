@@ -13,8 +13,8 @@ jobs:
       - name: Read groupId and version from pom.xml
         id: maven
         run: |
-          GROUP_ID=$(xmllint --xpath "/*[local-name()='project']/*[local-name()='groupId']/text()" pom.xml)
-          VERSION=$(xmllint --xpath "/*[local-name()='project']/*[local-name()='version']/text()" pom.xml)
+          GROUP_ID=$(grep -m 1 '<groupId>' pom.xml | sed 's/.*<groupId>\(.*\)<\/groupId>.*/\1/')
+          VERSION=$(grep -m 1 '<version>' pom.xml | sed 's/.*<version>\(.*\)<\/version>.*/\1/')
           echo "GROUP_ID=$GROUP_ID"
           echo "VERSION=$VERSION"
           echo "group_id=$GROUP_ID" >> $GITHUB_OUTPUT
