@@ -13,7 +13,7 @@ jobs:
       - name: Read and extract groupId and version from pom.xml
         id: groupid
         run: |
-          GROUP_ID=$(grep -m 1 '<groupId>' .github/workflows/pom.xml | sed -n 's:.*<groupId>\(.*\)</groupId>.*:\1:p')
+          GROUP_ID=$(grep -m 2 '<groupId>' .github/workflows/pom.xml | sed -n 's:.*<groupId>\(.*\)</groupId>.*:\1:p')
           echo "Full groupId: $GROUP_ID"
           IFS='.' read -r PART1 PART2 PART3 PART4 PART5 <<< "$GROUP_ID"
 
