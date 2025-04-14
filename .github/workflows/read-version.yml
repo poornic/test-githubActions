@@ -24,7 +24,7 @@ jobs:
           echo "part5=$PART5" >> $GITHUB_OUTPUT
 
           
-          GROUP_ID=$(grep -m 1 '<groupId>' .github/workflows/pom.xml | sed 's/.*<groupId>\(.*\)<\/groupId>.*/\1/')
+          GROUP_ID=$(grep -m 2 '<groupId>' .github/workflows/pom.xml | sed 's/.*<groupId>\(.*\)<\/groupId>.*/\1/')
           VERSION=$(grep -m 1 '<version>' .github/workflows/pom.xml | sed 's/.*<version>\(.*\)<\/version>.*/\1/')
           echo "GROUP_ID=$GROUP_ID"
           echo "VERSION=$VERSION"
