@@ -11,11 +11,11 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Read and extract groupId and version from pom.xml
-        id: maven
+        id: groupid
         run: |
-          FULL_GROUP_ID=$(awk '/<project>/,/<\/project>/' .github/workflows/pom.xml | grep '<groupId>' | sed -n 's:.*<groupId>\(.*\)</groupId>.*:\1:p')
-          echo "Full groupId: $FULL_GROUP_ID"
-          IFS='.' read -r PART1 PART2 PART3 PART4 PART5 <<< "$FULL_GROUP_ID"
+          GROUP_ID=$(grep -m 1 '<groupId>' .github/workflows/pom.xml | sed -n 's:.*<groupId>\(.*\)</groupId>.*:\1:p')
+          echo "Full groupId: $GROUP_ID"
+          IFS='.' read -r PART1 PART2 PART3 PART4 PART5 <<< "$GROUP_ID"
 
           echo "part1=$PART1" >> $GITHUB_OUTPUT
           echo "part2=$PART2" >> $GITHUB_OUTPUT
@@ -32,8 +32,3 @@ jobs:
           echo "service=$PART5"
           echo "group_id=$GROUP_ID" >> $GITHUB_OUTPUT
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-
-      - name: Use output
-        run: |
-          echo "Group ID: ${{ steps.maven.outputs.group_id }}"
-          echo "Version: ${{ steps.maven.outputs.version }}"
