@@ -27,5 +27,5 @@ jobs:
           echo "part4=$PART4" >> $GITHUB_OUTPUT
           echo "part5=$PART5" >> $GITHUB_OUTPUT
 
-          echo "domain=$part4"
-          echo "service=$part5"
+          echo "domain=$PART4"
+          echo "service=$PART5"
