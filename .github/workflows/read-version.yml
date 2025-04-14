@@ -14,7 +14,7 @@ jobs:
         id: groupid
         run: |
           # Extract the second <groupId> from pom.xml
-          SECOND_GROUP_ID=$(grep '<groupId>' pom.xml | sed -n '2p' | sed -n 's:.*<groupId>\(.*\)</groupId>.*:\1:p')
+          SECOND_GROUP_ID=$(grep '<groupId>' .github/workflows/pom.xml | sed -n '2p' | sed -n 's:.*<groupId>\(.*\)</groupId>.*:\1:p')
           echo "Found second groupId: $SECOND_GROUP_ID"
 
           # Split it into parts by "."
